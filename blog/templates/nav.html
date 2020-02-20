@@ -1,0 +1,201 @@
+{%extend 'header.html' %}
+{% block nav %}
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <a class="navbar-brand" href="#">OUR BLOG</a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+      <li class="nav-item">
+        <button class="btn btn-outline-pr my-2 my-sm-0">login</button>
+      </li>
+  </div>
+</nav>
+
+
+<!-- ############################################################################################################ -->
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sidebar %}
+    <div class="row m-0 mt-5">
+      <div class="col-12 col-md-2 p-0">
+        <!-- ################################### -->
+        <div class="bg-dark h-100">
+            <!-- Sidebar -->
+            <nav id="sidebar">
+
+                <ul class="list-unstyled components">
+                    <li class="mb-3">
+                        <a href="#" class="btn btn-dark">Home</a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="btn btn-dark">About</a>
+                    </li>
+                    <li class="active mb-3">
+                        <a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle btn btn-dark"><b>Categories</b></a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu">
+                            <li class="mb-3">
+                              <div class="row">
+                                <div class="col">
+                                  <a href="#" class="btn btn-dark">Sports</a>
+                                </div>
+                                <div class="col">
+                                  <button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
+                          subscribe
+                        </button>
+                                </div>
+                              </div>
+                                
+                            </li>
+                            <li class="mb-3">
+                              <div class="row">
+                                <div class="col">
+                                  <a href="#" class="btn btn-dark">Politics</a>
+                                </div>
+                                <div class="col">
+                                  <button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
+                          subscribe
+                        </button>
+                                </div>
+                              </div>
+                            </li>
+                            <li class="mb-3">
+                              <div class="row">
+                                <div class="col">
+                                  <a href="#" class="btn btn-dark">News</a>
+                                </div>
+                                <div class="col">
+                                  <button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
+                          subscribe
+                        </button>
+                                </div>
+                              </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-dark">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+        <!-- ##################################### -->
+      </div>
+
+
+      <div class="col-12 col-md-10 p-0">
+          
+        <div class="row">
+          <div class="col-12">
+            <!-- Full Page Intro -->
+            <div class="view" style="background-image: url({% static 'img/read.jpg' %}); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+              <!-- Mask & flexbox options-->
+              <div class="mask rgba-gradient align-items-center">
+                <!-- Content -->
+                <div class="container">
+                  <!--Grid row-->
+                  <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-6 primary-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft ml-md-4" data-wow-delay="0.3s">
+                      <h1 class="h1-responsive text-white font-weight-bold mt-sm-5">Welcome to our blog </h1>
+                      <hr class="hr-light">
+                      <h5 class="mb-5 text-white ">Lorem ipsum dolor sit amet, 
+                        <br>consectetur adipisicing elit. 
+                        <br>Rem repellendus quasi fuga nesciunt
+                      dolorum nulla magnam veniam sapiente, 
+                      <br>fugiat! Commodi sequi non animi ea dolor molestiae
+                      iste.</h5>
+                    </div>
+                    <!--Grid column-->
+                    <!--Grid column-->
+                    <!-- <div class="col-md-6 col-xl-5 mt-xl-5 wow fadeInRight" data-wow-delay="0.3s">
+                      <img src="https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png" alt="" class="img-fluid">
+                    </div> -->
+                    <!--Grid column-->
+                  </div>
+                  <!--Grid row-->
+                </div>
+                <!-- Content -->
+              </div>
+              <!-- Mask & flexbox options-->
+            </div>
+          </div>
+          <div class="col-12">
+            xxxxxxx
+      </div>
+    </div>
+          <!-- Full Page Intro -->
+  </div>
+
+
+
+
+{% endblock %}
+
+
+<!-- 
+<div class="container">
+    <div class="row py-3">
+        <div class="col-3 order-2" id="sticky-sidebar">
+            <div class="sticky-top">
+                xxxxxx
+            </div>
+        </div>
+        <div class="col" id="main">
+            <h1>Main Area</h1>
+            yyyyyy   
+        </div>
+    </div>
+</div>
+ -->
+
+
+
+
+
+
+
+        <div class="row">
+          <div class="col-12">
+            <!-- Full Page Intro -->
+            <div class="view" style="background-image: url({% static 'img/read.jpg' %}); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+              <!-- Mask & flexbox options-->
+              <div class="mask rgba-gradient align-items-center">
+                <!-- Content -->
+                <div class="container">
+                  <!--Grid row-->
+                  <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-6 primary-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft ml-md-4" data-wow-delay="0.3s">
+                      <h1 class="h1-responsive text-white font-weight-bold mt-sm-5">Welcome to our blog </h1>
+                      <hr class="hr-light">
+                      <h5 class="mb-5 text-white ">Lorem ipsum dolor sit amet, 
+                        <br>consectetur adipisicing elit. 
+                        <br>Rem repellendus quasi fuga nesciunt
+                      dolorum nulla magnam veniam sapiente, 
+                      <br>fugiat! Commodi sequi non animi ea dolor molestiae
+                      iste.</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            xxxxxxx
+          </div>
+    </div>
+
