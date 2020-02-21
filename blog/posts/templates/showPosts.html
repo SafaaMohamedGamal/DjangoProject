@@ -1,0 +1,35 @@
+{% extends 'header.html' %}
+{% load humanize %}
+{% block posts %}
+<p>
+	<a class="ml-2" data-toggle="collapse" href="#comments"> Comments </a>
+</p>
+<div class="collapse" id="comments">
+	<div class="card card-body">
+		{% for comment in comments %}
+			<div>
+				{{comment.commentText}}
+				{{comment.commentTime|naturaltime}}
+			</div>
+			<p>
+				<a class="ml-2" data-toggle="collapse" href="#replys"> Replys </a>
+			</p>
+			<div class="collapse" id="replys">
+				{% for reply in replys %}
+					{% if comment.id == reply.commentId_id %}
+					<div class="card card-body">
+						<strong>
+							{{reply.replyText}}
+							{{reply.replyTime|naturaltime}}
+						</strong>
+					</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+			
+		{% endfor %}
+
+	</div>
+</div>
+
+{% endblock %}
