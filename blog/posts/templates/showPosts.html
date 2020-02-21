@@ -1,0 +1,17 @@
+{% extends 'header.html' %}
+
+{% block posts %}
+
+{% for comment in comments %}
+	<div>{{comment.commentText}}</div>
+	{% for reply in replys %}
+			<div>
+				{% if comment.commentId.type == reply.commentId.type %}
+					***{{reply.replyText}}
+				{% endif %}
+			</div>
+	{% endfor %}
+	
+{% endfor %}
+
+{% endblock %}
