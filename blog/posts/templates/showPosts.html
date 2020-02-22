@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block posts %}
+
+   {% for post in all_posts %}
+   <h1>{{post.title}}</h1>
+   <p>{{post.content}}</p>
+   {% endfor %}
+
 <p>
 	<a class="ml-2" data-toggle="collapse" href="#comments"> Comments </a>
 </p>
@@ -37,12 +43,5 @@
 		<button>comment</button>
 	</form>
 </div>
-
-<h1>New Student</h1>
-<form method="POST">{% csrf_token %}
-	{{ form.as_p }}
-	<button type="submit" >Save</button>
-</form>
-
 
 {% endblock %}
