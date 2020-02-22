@@ -1,10 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block sidebar %}
-<div class="row m-0">
-	<div class="col-12 col-md-2 p-0">
-		<div class="bg-dark h-100">
+<div class="bg-dark" style="height: 35rem; width: 10rem; position: fixed;">
 
 		    <nav id="sidebar">
 
@@ -62,64 +56,3 @@
 		        </ul>
 		    </nav>
 		</div>
-	</div>
-
-	<div class="col-12 col-md-10 p-0">
-
-        <div class="row">
-          	<div class="col-12">
-            	<div class="view" style="background-image: url({% static 'img/read.jpg' %}); background-repeat: no-repeat; background-size: cover; background-position: center center;">	
-              		<div class="mask rgba-gradient align-items-center">
-                		<div class="container">
-                  			<div class="row">
-                    			<div class="col-md-6 primary-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft ml-md-4" data-wow-delay="0.3s">
-                      				<h1 class="h1-responsive text-white font-weight-bold mt-sm-5">Welcome to our blog </h1>
-                      				<hr class="hr-light">
-                      				<h5 class="mb-5 text-white ">Lorem ipsum dolor sit amet, 
-                        			<br>consectetur adipisicing elit. 
-                        			<br>Rem repellendus quasi fuga nesciunt
-                      				dolorum nulla magnam veniam sapiente, 
-                      				<br>fugiat! Commodi sequi non animi ea dolor molestiae
-                      				iste.</h5>
-                    			</div>
-                  			</div>
-                		</div>
-              		</div>
-            	</div>
-          	</div>
-
-        	<div class="col-12">
-            	
-            	<div>
-            		posts
-            		{% block posts %}
-            		{% endblock %}
-            	</div>
-
-
-          	</div>
-    	</div>
-	</div>
-
-</div>
-
-
-
-{% endblock %}
-
-
-<!-- 
-<div class="container">
-    <div class="row py-3">
-        <div class="col-3 order-2" id="sticky-sidebar">
-            <div class="sticky-top">
-                xxxxxx
-            </div>
-        </div>
-        <div class="col" id="main">
-            <h1>Main Area</h1>
-            yyyyyy   
-        </div>
-    </div>
-</div>
- -->

@@ -2,4 +2,4 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 def landingPage(request):
-	return render(request, 'header.html')
+	return render(request, 'landingPage.html')
