@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import comments, replys, Post
-from .forms import commentForm
+from .forms import commentForm, postForm 
+
 from django.contrib.auth.models import User
 
 
@@ -12,6 +13,25 @@ def showPosts(request):
     allreplys = replys.objects.filter(postId=1).order_by('replyTime')
     context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys}
     return render(request ,'showPosts.html' ,context)
+
+#add new post through form
+def addPost(request):
+  new_post=postForm()
+  added_post=None
+  if request.method=="POST":
+    new_post=postForm(request.POST,request.FILES)
+    if new_post.is_valid():
+      added_post=new_post.save(commit=False)
+      added_post.author=request.user
+      added_post.save()
+      return HttpResponseRedirect('/posts/')
+  return render(request,'new.html',{'new_post':new_post})
+
+# when user choose specific category
+def allCategoryPosts(request,cat_num):
+      cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
+      context={'cat_posts':cat_posts}
+      return render(request ,'CategotyPage.html' ,context)
 
 
 def subscribeCategory(request,user_num,cat_num):
