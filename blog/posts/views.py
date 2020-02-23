@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import comments, replys, Post
 from .forms import commentForm, postForm 
-
+from django.db.models import Q
 from django.contrib.auth.models import User
 
 
@@ -33,6 +33,24 @@ def allCategoryPosts(request,cat_num):
       context={'cat_posts':cat_posts}
       return render(request ,'CategotyPage.html' ,context)
 
+# when user choose specific category
+def allCategoryPosts(request,cat_num):
+      cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
+      context={'cat_posts':cat_posts}
+      return render(request ,'CategotyPage.html' ,context)
+
+#search for posts with title or tag
+def searchForPost(request):
+  print(request.GET.get('word'))
+  term = request.GET.get('word')
+  print(term)
+  cat_posts = Post.objects.filter(
+    Q(title__icontains=term) |
+    Q(tag_post__icontains=term)
+    ).order_by('-time_created')
+  context={'cat_posts':cat_posts}
+  return render(request ,'searchPage.html' ,context)
+
 
 def subscribeCategory(request,user_num,cat_num):
 	instance = categories_users_id(categories_id=cat_num, user_id=user_num)
@@ -41,16 +59,9 @@ def subscribeCategory(request,user_num,cat_num):
 	else:
 		instanse.delete()
 
-# when user choose specific category
-def allCategoryPosts(request,cat_num):
-      cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
-      context={'cat_posts':cat_posts}
-      return render(request ,'CategotyPage.html' ,context)
 
 
-def searchForPost(string):
-	queryset = Post.objects.filter(title=string) | Post.objects.filter(tag_post = string)
-	ordered_query = queryset.order_by('-time_created')
+
 	
 
 def commentsReplys(request):

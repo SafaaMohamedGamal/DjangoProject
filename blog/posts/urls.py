@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^Category/addPost$', views.addPost),
     url(r'^Category/(?P<cat_num>[1-3])$', views.allCategoryPosts),
     url(r'^$', views.showPosts),
+    url(r'^Search/$', views.searchForPost),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
