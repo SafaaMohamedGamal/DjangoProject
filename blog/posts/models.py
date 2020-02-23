@@ -19,8 +19,12 @@ class Post(models.Model):
 	time_created = models.DateTimeField(auto_now_add=True)
 	author= models.ForeignKey(User, on_delete=models.DO_NOTHING )
 	tag_post = models.CharField(max_length=200)
-	photo = models.ImageField(blank=True, null=True)
+	photo = models.ImageField(blank=True,null=True)
 	category_type = models.ForeignKey(Categories, on_delete=models.DO_NOTHING)
+	def __str__(self):
+		return self.content
+
+
 
 # class poststable(models.Model):
 # 	# postId = models.CharField(primary_key=True, max_length=10)

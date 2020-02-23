@@ -4,11 +4,10 @@ from .models import comments, replys, Post
 from .forms import commentForm
 from django.contrib.auth.models import User
 
-# def showPosts(request):
-# 	return render(request, 'showPosts.html')
 
+#to 5 posts in lamding page
 def showPosts(request):
-    all_posts = Post.objects.all()
+    all_posts = Post.objects.all().order_by('-time_created')[:5]
     allcomments = comments.objects.filter(postId=1).order_by('commentTime')
     allreplys = replys.objects.filter(postId=1).order_by('replyTime')
     context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys}
@@ -22,8 +21,12 @@ def subscribeCategory(request,user_num,cat_num):
 	else:
 		instanse.delete()
 
+# when user choose specific category
 def allCategoryPosts(request,cat_num):
-	  queryset = Post.objects.filter(category_type=cat_num).order_by('-time_created')
+      cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
+      context={'cat_posts':cat_posts}
+      return render(request ,'CategotyPage.html' ,context)
+
 
 def searchForPost(string):
 	queryset = Post.objects.filter(title=string) | Post.objects.filter(tag_post = string)
