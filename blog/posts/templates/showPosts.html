@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block posts %}
+
+   {% for post in all_posts %}
+   <h1>{{post.title}}</h1>
+   <p>{{post.content}}</p>
+   {% endfor %}
+
+<p>
+	<a class="ml-2" data-toggle="collapse" href="#comments"> Comments </a>
+</p>
+<div class="collapse pl-3" id="comments"  style="width:30rem;">
+	<div class="card card-body">
+		{% for comment in comments %}
+			<div>
+				{{comment.commentText}}
+				<br>
+				{{comment.commentTime|naturaltime}}
+			</div>
+			<p>
+				<a class="ml-2" data-toggle="collapse" href="#com{{comment.id}}"> Replys </a>
+			</p>
+			<div class="collapse" id="com{{comment.id}}">
+				{% for reply in replys %}
+					{% if comment.id == reply.commentId_id %}
+					<div class="card card-body">
+						<strong>
+							{{reply.replyText}}
+							<br>
+							{{reply.replyTime|naturaltime}}
+						</strong>
+					</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+			
+		{% endfor %}
+
+	</div>
+	<form>
+		<input type="text" name=""  style="width:23rem;">
+		<button>comment</button>
+	</form>
+</div>
+
+{% endblock %}
