@@ -1,18 +1,33 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import comments, replys, Post
-from .forms import commentForm
+from .models import comments, replys, Post, likes
+from .forms import commentForm,likeForm
 from django.contrib.auth.models import User
-
-# def showPosts(request):
-# 	return render(request, 'showPosts.html')
+import json
 
 def showPosts(request):
+    allcomments=[]
+    allreplys=[]
     all_posts = Post.objects.all()
-    allcomments = comments.objects.filter(postId=1).order_by('commentTime')
-    allreplys = replys.objects.filter(postId=1).order_by('replyTime')
+    for x in all_posts:
+        allcomments += comments.objects.filter(postId=x.id).order_by('commentTime')
+        allreplys += replys.objects.filter(postId=x.id).order_by('replyTime')
     context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys}
     return render(request ,'showPosts.html' ,context)
+
+def showOnePost(request, post_id):
+    x = Post.objects.get(id = post_id)
+    allcomments = comments.objects.filter(postId=x.id).order_by('commentTime')
+    allreplys = replys.objects.filter(postId=x.id).order_by('replyTime')
+    alllikes = likes.objects.filter(postId=x.id, like="like").count()
+    alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
+    urlike = likes.objects.get(postId=x.id, userId=request.user)
+    context = {'post':x, 'comments': allcomments, 
+        'replys': allreplys, 
+        'likescount': alllikes, 
+        'dislikescount': alldislikes,
+        'urlike':urlike.like}
+    return render(request ,'showOnePost.html' ,context)
 
 
 def subscribeCategory(request,user_num,cat_num):
@@ -38,28 +53,41 @@ def commentsReplys(request):
 	return render(request, 'showPosts.html', context)
 
 
+
 def addComment(request):
-    template_name = 'comments.html'
-    post = get_object_or_404(Post, id='1')
-    comments = post.comments_set.filter(postId='1')
-    new_comment = None
-    # Comment posted
-    if request.method == 'POST':
-        comment_form = commentForm(request.POST)
-        if comment_form.is_valid():
+    postid = request.GET['post']
+    newComment = request.GET['text']
+    if newComment:
+        x = Post.objects.get(id=postid)
+        new_comment = comments.objects.create(postId = x, userId=request.user)
+        new_comment.commentText=newComment
+        new_comment.save()
+        count = str(comments.objects.filter(postId=x).count())
+        return HttpResponse(json.dumps({'newComment':newComment, 'count':count}))
 
-            # Create Comment object but don't save to database yet
-            new_comment = comment_form.save(commit=False)
-            # Assign the current post to the comment
-            new_comment.postId = post
-            new_comment.userId=request.user
-            # Save the comment to the database
-            new_comment.save()
-    else:
-        comment_form = commentForm()
 
-    return render(request, template_name, {'post': post,
-                                           'comments': comments,
-                                           'new_comment': new_comment,
-                                           'comment_form': comment_form})
+def addReply(request):
+    postid = request.GET['post']
+    commentid = request.GET['comment']
+    newReply = request.GET['text']
+    if newReply:
+        p = Post.objects.get(id=postid)
+        c = comments.objects.get(id=commentid, postId=p)
+        new_reply = replys.objects.create(postId = p, commentId=c, userId=request.user)
+        new_reply.replyText=newReply
+        new_reply.save()
+        count = str(replys.objects.filter(postId=p, commentId=commentid).count())
+        return HttpResponse(json.dumps({'newReply':newReply, 'count':count}))
+
+
+def addLike(request):
+    postid = request.GET['post']
+    newLike = request.GET['like']
+    p = Post.objects.get(id=postid)
+    new_like, create = likes.objects.get_or_create(postId = p, userId=request.user)
+    new_like.like=newLike
+    new_like.save()
+    countlike = str(likes.objects.filter(postId=p, like="like").count())
+    countdislike = str(likes.objects.filter(postId=p, like="dislike").count())
+    return HttpResponse(json.dumps({'newLike':newLike, 'countlike':countlike, 'countdislike':countdislike}))
 

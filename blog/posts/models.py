@@ -28,10 +28,10 @@ class Post(models.Model):
 		
 
 class comments(models.Model):
-	commentText = models.CharField(max_length=100)
+	commentText = models.TextField(max_length=100)
 	commentTime = models.DateTimeField(auto_now_add=True)
-	postId = models.ForeignKey(Post, on_delete=models.CASCADE)
-	userId = models.ForeignKey(User, on_delete=models.CASCADE)
+	postId = models.ForeignKey(Post, on_delete=models.CASCADE, default=1)
+	userId = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
 
 	def __str__(self):
@@ -43,19 +43,26 @@ class replys(models.Model):
 	replyText = models.CharField(max_length=100)
 	replyTime = models.DateTimeField(auto_now_add=True)
 	commentId = models.ForeignKey(comments, on_delete=models.CASCADE)
-	postId = models.ForeignKey(Post, on_delete=models.CASCADE)
-	userId = models.ForeignKey(User, on_delete=models.CASCADE)
+	postId = models.ForeignKey(Post, on_delete=models.CASCADE, default=1)
+	userId = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
 	def __str__(self):
 		return  self.replyText
 
 
 class likes(models.Model):
-	like = models.BooleanField(default=None)
+	like = models.CharField(
+	        max_length=7,
+	        choices=(
+	            ("like", "like"),
+	            ("dislike", "dislike"),
+	            ("none", "none"),
+	        ),default="none"
+	    )
 	postId = models.ForeignKey(Post, on_delete=models.CASCADE)
 	userId = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.id
+		return self.like
 
 		
