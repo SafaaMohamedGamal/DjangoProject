@@ -16,15 +16,9 @@ def signup(request):
             return redirect('home')
     else:
         form = UserCreationForm()
-
     context = {
         'form': form
     }
     return render(request, 'registration/sign_up.html', context)
-
-
-
-
-
 
 
