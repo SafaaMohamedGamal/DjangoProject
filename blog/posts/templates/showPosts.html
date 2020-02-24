@@ -3,71 +3,22 @@
 {% load crispy_forms_tags %}
 {% block posts %}
 
-
+<div class="col-md-11 mt-3 left">
    {% for post in all_posts %}
-	   <h1>{{post.title}}</h1>
-	   <p>{{post.content}}</p>
-
-	<div class="card card-body">
-		<p>
-			<a class="ml-2" data-toggle="collapse" href="#com{{post.id}}"> Comments </a>
-			<a class="ml-2" data-toggle="collapse" href="#like{{post.id}}"> likes </a>
-		</p>
-		<div class="collapse pl-3" id="com{{post.id}}"  style="width:30rem;">
-		{% for comment in comments %}
-			{% if post.id == comment.postId_id %}
-				<div class="card card-body">
-					<div>
-						<b>{{comment.userId}}</b>
-						<br>
-						{{comment.commentText}}
-						<br>
-						{{comment.commentTime|naturaltime}}
-					</div>
-					<p>
-						<a class="ml-2" data-toggle="collapse" href="#rep{{comment.id}}"> Replys </a>
-					</p>
-					<div class="collapse" id="rep{{comment.id}}">
-						{% for reply in replys %}
-							{% if comment.id == reply.commentId_id %}
-							<div class="card card-body">
-									<b>{{reply.userId}}</b>
-									{{reply.replyText}}
-									<br>
-									{{reply.replyTime|naturaltime}}
-							</div>
-							{% endif %}
-						{% endfor %}
-
-						<form>
-							<input type="text" name=""  style="width:20rem;">
-							<button>reply</button>
-						</form>
-					</div>
-
-				</div>
-			{% endif %}
-			
-		{% endfor %}
-
-			<form method="post" style="margin-top: 1.3em;">
-	            {{ comment_form | crispy }}{% csrf_token %}
-	            <button type="submit" class="btn btn-primary  btn-sm"  style="width:23rem;">Submit</button>
-        	</form>
-		</div>
-	</div>
-   {% endfor %}
-
-   <br>
-   <br>
-
-
-<div class="card-body">
-        <h3>Leave a like</h3>
-        <form method="post" style="margin-top: 1.3em;">
-            {{ like_form.like }}{% csrf_token %}
-            <button type="submit" class="btn btn-primary  btn-lg">like</button>
-        </form>
+	    <div class="card mb-4">
+		    <div class="card-body">
+			    <h2 class="card-title">{{ post.title }}</h2>
+			    <p class="card-text text-muted h6">{{ post.author }} | {{ post.time_created}} </p>
+			    {% if post.photo %}    
+			    	<img src="{{post.photo.url}}" width="350" height="300"> <br>
+			    {% else %}
+			    	<p></p>
+			    {% endif %}
+			    <p class="card-text text-justify">{{post.content|slice:":200" }}</p>
+			    <p class="card-text" style="color: blue ">{{post.tag_post }}</p>
+			    <a href="{{post.id}}" class="btn btn-dark">Read More &rarr;</a>
+		    </div>
+	  	</div>
+   {%endfor%}
 </div>
 {% endblock %}
-
