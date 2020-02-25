@@ -70,3 +70,9 @@ class likes(models.Model):
 		return self.like
 
 		
+
+class forbWords(models.Model):
+	forbWord = models.CharField(max_length=30, default="rude")
+	def __str__(self):
+		return self.forbWord
+		

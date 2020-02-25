@@ -3,7 +3,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block posts %}
-
+{% load badWordsFilter %}
 <div class="col-md-11 mt-3 left">
         <div class="card mb-4">
             <div class="card-body">
@@ -18,7 +18,6 @@
                 <p class="card-text" style="color: blue ">{{post.tag_post }}</p>
             </div>
         </div>
-
 
 <div class="card card-body">
     <div class="row text-center" id="dolike">
@@ -43,7 +42,7 @@
         <div class="card card-body">
             <div>
                 <div class="commentid">{{comment.userId}}</div>
-                <div class="commenttext">{{comment.commentText}}</div>
+                <div class="commenttext">{{comment.commentText|badWordsFilter:forbWords}}</div>
                 <div class="commenttime">{{comment.commentTime|naturaltime}}</div>
             </div>
             <p>
@@ -56,7 +55,7 @@
                 {% if comment.id == reply.commentId_id %}
                     <div class="card card-body">
                         <div class="replyid">{{reply.userId}}</div>
-                        <div class="replytext">{{reply.replyText}}</div>
+                        <div class="replytext">{{reply.replyText|badWordsFilter:forbWords}}</div>
                         <div class="replytime">{{reply.replyTime|naturaltime}}</div>
                     </div>
                 {% endif %}
@@ -175,15 +174,16 @@
 
     function sendComment()
     {
-    commentBtn = document.querySelector('#commentBtn')
-    textarea = document.querySelector('#textarea')
-    count = document.querySelector('#count')
-    add = document.querySelector('.append').lastElementChild
-    append = document.querySelector('.append')
-    add.style.display="none"
 
         commentBtn.addEventListener('click', (ev) => 
         {
+            commentBtn = document.querySelector('#commentBtn')
+            textarea = document.querySelector('#textarea')
+            count = document.querySelector('#count')
+            add = document.querySelector('.append').lastElementChild
+            append = document.querySelector('.append')
+            add.style.display="none"
+            
             ev.preventDefault()
             url = "/posts/comment/?post=" + `{{post.id}}`+"&text=" + textarea.value
             // sendComment(url)

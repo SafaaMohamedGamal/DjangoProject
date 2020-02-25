@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import comments, replys, Post, likes
+from .models import comments, replys, Post, likes, forbWords
 from .forms import commentForm,likeForm, postForm 
 from django.contrib.auth.models import User
 import json
@@ -14,6 +14,7 @@ def showPosts(request):
     all_posts = Post.objects.all().order_by('-time_created')[:5]
     allcomments = comments.objects.filter(postId=1).order_by('commentTime')
     allreplys = replys.objects.filter(postId=1).order_by('replyTime')
+
     context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys}
     return render(request ,'showPosts.html' ,context)
 
@@ -24,11 +25,16 @@ def showOnePost(request, post_id):
     alllikes = likes.objects.filter(postId=x.id, like="like").count()
     alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
     urlike = likes.objects.filter(postId=x.id, userId=request.user)
+    badWords = forbWords.objects.all()
+    xword = []
+    for word in badWords:
+        xword.append(word.forbWord)
+
     context = {'post':x, 'comments': allcomments, 
         'replys': allreplys, 
         'likescount': alllikes, 
         'dislikescount': alldislikes,
-        'urlike':urlike}
+        'urlike':urlike, 'forbWords': xword}
     return render(request ,'showOnePost.html' ,context)
 
 #add new post through form
