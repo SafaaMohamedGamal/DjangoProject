@@ -20,8 +20,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from authentication import views
 from django.urls import path
 
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    path('admin/', views.admin, name = 'admin'),
     path('' , views.home, name = 'home'),
     path('accounts/' , include('django.contrib.auth.urls')),
     path('signup/', views.signup , name = 'signup')

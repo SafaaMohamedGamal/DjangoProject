@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'posts',
     'accounts',
     'authentication',
+    'admin_panel',
     'crispy_forms',
     'blog'  
     
@@ -62,7 +63,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'authentication/templates')
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -129,7 +130,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'assets'),
+    os.path.join(BASE_DIR,'static'),
     )
 
 

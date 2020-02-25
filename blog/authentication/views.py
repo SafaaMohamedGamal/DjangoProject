@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .forms import RegisterForm
+from templates import admin
 
 # Create your views here.
 
@@ -19,5 +20,9 @@ def signup(response):
 	    form = RegisterForm()
 
     return render(response, "registration/sign_up.html", {"form":form})
+
+
+def admin(request):
+	return render(request,'admin/index.html')
 
 
