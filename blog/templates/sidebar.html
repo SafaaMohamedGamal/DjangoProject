@@ -1,58 +1,54 @@
-<div class="bg-dark" style="height: 35rem; width: 10rem; position: fixed;">
 
-		    <nav id="sidebar">
+<div class="bg-dark mr-3" style="height: 100%;">
+    <nav id="sidebar">
+    	<div class="container py-5">
+	        <ul class="list-unstyled components mb-5">
+	        	<li class="mb-3">
+	        		<a class="btn btn-dark btn-block" href="{% url 'home' %}"> Home </a>
+	        	</li>
+	            <li class="mb-3">
+	                <a href="/posts" class="btn btn-dark btn-block">Profile</a>
+	            </li>
+	            <li class="mb-3">
+	                <a href="#" class="btn btn-dark btn-block">About</a>
+	            </li>
+	            <li class="active mb-3">
+	                <a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle btn btn-dark btn-block"><b>Categories</b></a>
+	                <ul class="collapse list-unstyled" id="homeSubmenu">
 
-		        <ul class="list-unstyled components">
-		            <li class="mb-3">
-		                <a href="#" class="btn btn-dark">Home</a>
-		            </li>
-		            <li class="mb-3">
-		                <a href="#" class="btn btn-dark">About</a>
-		            </li>
-		            <li class="active mb-3">
-		                <a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle btn btn-dark"><b>Categories</b></a>
-		                <ul class="collapse list-unstyled" id="homeSubmenu">
-		                    <li class="mb-3">
-		                    	<div class="row">
+
+	                	{% for cat in all_cat %}
+	                    <li class="mt-3">
+	                    	<div class="row">
 		                    		<div class="col">
-		                    			<a href="#" class="btn btn-dark">Sports</a>
+		                    			<a href='/posts/Category/{{cat.id}}' class="btn btn-dark">{{cat.category_name}}</a>
 		                    		</div>
+		                    {% if user.is_authenticated %}
+		                    	<form method="POST" action="/posts/subscribe/{{cat.id}}">
+		                    			{% csrf_token %}
 		                    		<div class="col">
-		                    			<button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
-										  subscribe
-										</button>
+		                    			{% if cat in sub_cat  %}
+		                    			<input type="hidden" name="subscribe" value="0">
+		                    			<button class="btn btn-primary btn-sm">Unsubscribe</button> 
+		                    			{% else %}
+		                    			<input type="hidden" name="subscribe" value="1">
+		                    			<button class="btn btn-primary btn-sm">subscribe</button> 
+		                    			{% endif %}
 		                    		</div>
-		                    	</div>
-		                    </li>
-		                    <li class="mb-3">
-		                    	<div class="row">
-		                    		<div class="col">
-		                    			<a href="#" class="btn btn-dark">Politics</a>
-		                    		</div>
-		                    		<div class="col">
-		                    			<button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
-										  subscribe
-										</button>
-		                    		</div>
-		                    	</div>
-		                    </li>
-		                    <li class="mb-3">
-		                    	<div class="row">
-		                    		<div class="col">
-		                    			<a href="#" class="btn btn-dark">News</a>
-		                    		</div>
-		                    		<div class="col">
-		                    			<button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
-										  subscribe
-										</button>
-		                    		</div>
-		                    	</div>
-		                    </li>
-		                </ul>
-		            </li>
-		            <li>
-		                <a href="#" class="btn btn-dark">Contact</a>
-		            </li>
-		        </ul>
-		    </nav>
-		</div>
+		                    	</form>
+
+		                    {% endif %}
+		                    </div>
+		                </li>
+		                {% endfor %}
+		                    		               
+			                </ul>
+			            </li>
+			            <li>
+			                <a href="#" class="btn btn-dark btn-block">Contact</a>
+			            </li>
+		    </ul>
+    	</div>
+    </nav>
+</div>
+		

@@ -14,14 +14,24 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.urls import path
-from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import views
+from django.conf.urls.static import static
+from blog import settings
+from authentication import views
+from django.urls import path
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', views.landingPage),
+    path('admin/', views.admin, name = 'admin'),
+    path('user/', views.user , name = 'user'),
+    path('accounts/' , include('django.contrib.auth.urls')),
+    path('signup/', views.signup , name = 'signup'),
+    path('mkAdmin/<num>', views.admin, name = 'admin'), 
+    path('adminManage/', views.adminManage, name='adminManage'),
+    url(r'^', include('posts.urls')),
     url(r'^posts/', include('posts.urls')),
-]
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
