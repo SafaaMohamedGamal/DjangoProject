@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import comments, replys, Post, likes, forbWords
-from .forms import commentForm,likeForm, postForm 
+from .forms import commentForm,likeForm, postForm , wordForm
 from django.contrib.auth.models import User
 import json
 from django.db.models import Q
@@ -12,10 +12,12 @@ def showPosts(request):
     allcomments=[]
     allreplys=[]
     all_posts = Post.objects.all().order_by('-time_created')[:5]
-    allcomments = comments.objects.filter(postId=1).order_by('commentTime')
-    allreplys = replys.objects.filter(postId=1).order_by('replyTime')
+    for x in all_posts:
+      alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
+      if alldislikes==10:
+        x.delete();
 
-    context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys}
+    context = {'all_posts':all_posts}
     return render(request ,'showPosts.html' ,context)
 
 def showOnePost(request, post_id):
@@ -24,17 +26,24 @@ def showOnePost(request, post_id):
     allreplys = replys.objects.filter(postId=x.id).order_by('replyTime')
     alllikes = likes.objects.filter(postId=x.id, like="like").count()
     alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
-    urlike = likes.objects.filter(postId=x.id, userId=request.user)
     badWords = forbWords.objects.all()
     xword = []
     for word in badWords:
         xword.append(word.forbWord)
 
-    context = {'post':x, 'comments': allcomments, 
-        'replys': allreplys, 
-        'likescount': alllikes, 
-        'dislikescount': alldislikes,
-        'urlike':urlike, 'forbWords': xword}
+    if request.user.is_authenticated:
+      urlike = likes.objects.filter(postId=x.id, userId=request.user)
+
+      context = {'post':x, 'comments': allcomments, 
+          'replys': allreplys, 
+          'likescount': alllikes, 
+          'dislikescount': alldislikes,
+          'urlike':urlike, 'forbWords': xword}
+
+    else:
+      context = {'post':x,
+          'likescount': alllikes, 
+          'dislikescount': alldislikes, 'comments': allcomments, 'forbWords': xword}
     return render(request ,'showOnePost.html' ,context)
 
 #add new post through form
@@ -123,6 +132,7 @@ def addReply(request):
 
 
 def addLike(request):
+  if request.user.is_authenticated:
     postid = request.GET['post']
     newLike = request.GET['like']
     p = Post.objects.get(id=postid)
@@ -132,4 +142,47 @@ def addLike(request):
     countlike = str(likes.objects.filter(postId=p, like="like").count())
     countdislike = str(likes.objects.filter(postId=p, like="dislike").count())
     return HttpResponse(json.dumps({'newLike':newLike, 'countlike':countlike, 'countdislike':countdislike}))
+  
+
+def adminForbWords(request):
+  added_badWords=None
+  if request.method=="POST":
+    new_badWords=wordForm(request.POST)
+    if new_badWords.is_valid():
+      added_badWords=new_badWords.save(commit=False)
+      added_badWords.save()
+      return HttpResponseRedirect('/adminForbWords/')
+  else:
+    new_badWords=wordForm()
+
+  badWords = forbWords.objects.all()
+  context = {'badWords':badWords,
+              'form':new_badWords}
+  return render(request,'forbWords.html',context)
+
+
+
+def editWords(request, word_num):
+  w = forbWords.objects.get(id=word_num)
+  added_badWords=None
+  if request.method=="POST":
+    new_badWords=wordForm(request.POST, instance=w)
+    if new_badWords.is_valid():
+      added_badWords=new_badWords.save(commit=False)
+      added_badWords.save()
+      return HttpResponseRedirect('/adminForbWords/')
+  else:
+    new_badWords=wordForm()
+
+  badWords = forbWords.objects.all()
+  context = {'badWords':badWords,
+              'form':new_badWords}
+  return render(request,'forbWords.html',context)
+
+
+def deleteWords(request, word_num):
+  badWords = forbWords.objects.filter(id=word_num)
+  badWords.delete()
+  return HttpResponseRedirect('/adminForbWords/')
+
 

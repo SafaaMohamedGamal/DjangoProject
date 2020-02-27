@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load static %}
 {% load crispy_forms_tags %}
+
 {% block posts %}
 
-<div class="col-md-11 mt-3 left">
+
+<div class="col-md-8 mt-3 mx-auto">
    {% for post in all_posts %}
 	    <div class="card mb-4">
 		    <div class="card-body">
 			    <h2 class="card-title">{{ post.title }}</h2>
-			    <p class="card-text text-muted h6">{{ post.author }} | {{ post.time_created}} </p>
-			    {% if post.photo %}    
-			    	<img src="{{post.photo.url}}" width="350" height="300"> <br>
+			    <p class="card-text text-muted h6">By {{ post.author }} | {{ post.time_created}} </p>
+			    <p class="card-text text-muted h6 tagStyle" style="color: blue "><span class="text-primary">Tag:</span> {{post.tag_post}}</p>
+			    {% if post.photo %}   
+			    <div class="text-center">
+			    	<img src="{{post.photo.url}}" width="350" height="300" class="img-fluid rounded my-3"> 
+			    	</div>
 			    {% else %}
 			    	<p></p>
 			    {% endif %}
 			    <p class="card-text text-justify">{{post.content|slice:":200" }}</p>
-			    <p class="card-text" style="color: blue ">{{post.tag_post }}</p>
 			    <a href="{{post.id}}" class="btn btn-dark">Read More &rarr;</a>
 		    </div>
 	  	</div>

@@ -60,13 +60,16 @@
 
     <!-- Main content -->
     <section class="content">
-
+      {% if user.is_superuser %}
         {% block pretitle %}{% endblock %}
         {% block content %}
         {% block object-tools %}{% endblock %}
         {{ content }}
         {% endblock %}
         {% block sidebar %}{% endblock %}
+      {% else %}
+        <div>not super user</div>
+      {% endif %}
    
       <!-- /.box -->
     </section>

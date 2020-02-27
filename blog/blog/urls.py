@@ -24,11 +24,14 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', views.admin, name = 'admin'),
-    path('' , views.home, name = 'home'),
+    # path('' , views.home, name = 'home'),
     path('accounts/' , include('django.contrib.auth.urls')),
     path('signup/', views.signup , name = 'signup'),
-    url(r'^landingpage/$', views.landingPage),
+
+    path('adminManage/', views.adminManage, name='adminManage'),
+    url(r'^', include('posts.urls')),
     url(r'^posts/', include('posts.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
