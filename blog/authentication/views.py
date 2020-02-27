@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm
 from templates import admin
 
+
 # Create your views here.
 
 def home(request):
@@ -29,6 +30,12 @@ def adminManage(request):
 	return render(request,'admin.html')
 
 
-
-
+def user(request):
+	users = User.objects.all()
+	flag = User.is_superuser
+	context = {
+		'user':users,
+		'flag':flag
+	}
+	return render(request,'user.html',context)
 
