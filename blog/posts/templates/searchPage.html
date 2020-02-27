@@ -2,12 +2,12 @@
 {% load humanize %}
 {% block posts %}
 <div class="col-md-11 mt-3 left">
-   {% for post in cat_posts %}
+   {% for post in all_posts %}
     <div class="card mb-4">
         <div class="card-body">
     <h2 class="card-title">{{ post.title }}</h2>
     <p class="card-text text-muted h6">{{ post.author }} | {{ post.time_created}} </p>
-    {% if post.photo != None %}    
+    {% if post.photo %}    
     <img src="{{post.photo.url}}" width="350" height="300"> <br>
     {% else %}
     <p> </p>
