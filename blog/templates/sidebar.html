@@ -1,3 +1,4 @@
+
 <div class="bg-dark mr-3" style="height: 100%;">
     <nav id="sidebar">
     	<div class="container py-5">
@@ -14,18 +15,30 @@
 	            <li class="active mb-3">
 	                <a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle btn btn-dark btn-block"><b>Categories</b></a>
 	                <ul class="collapse list-unstyled" id="homeSubmenu">
+
+
+	                	{% for cat in all_cat %}
 	                    <li class="mt-3">
 	                    	<div class="row">
-	                    		<div class="col-6">
-	                    			<a href="/posts/Category/1" class="btn btn-dark">Sports</a>
-	                    		</div>
-	                    		<div class="col-6">
-	                    			<button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
-									  subscribe
-									</button>
-	                    		</div>
+		                    		<div class="col">
+		                    			<a href='/posts/Category/{{cat.id}}' class="btn btn-dark">{{cat.category_name}}</a>
+		                    		</div>
+		                    		<div class="col">
+		                    			{% if subscribe.subscribe is 1  %} 
+                                         <a id='unsubscribe' href="/posts/unsubscribe/1" class="btn btn-primary btn-sm" data-toggle="collapse">Unsubscribe</a>
+		                    			
+		                    			{% else %}
+		                    			<a id='subscribe' href="/posts/subscribe/1" class="btn btn-primary btn-sm">Subscribe</a>
+		                    			{% endif %}
+		                    		</div>
 	                    	</div>
 	                    </li>
+	                    {% endfor %}
+
+
+
+
+
 	                </ul>
 	            </li>
 	            <li>
@@ -35,3 +48,4 @@
 	    </div>
     </nav>
 </div>
+

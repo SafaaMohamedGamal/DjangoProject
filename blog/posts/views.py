@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import comments, replys, Post, likes, forbWords
-from .forms import commentForm,likeForm, postForm , wordForm
+from .models import comments, replys, Post, likes, forbWords,subscribe,Categories
+from .forms import commentForm,likeForm, postForm , wordForm, categoryForm
 from django.contrib.auth.models import User
 import json
 from django.db.models import Q
@@ -59,43 +59,106 @@ def addPost(request):
       return HttpResponseRedirect('/posts/')
   return render(request,'new.html',{'new_post':new_post})
 
-# when user choose specific category
-def allCategoryPosts(request,cat_num):
-      cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
-      context={'cat_posts':cat_posts}
-      return render(request ,'CategotyPage.html' ,context)
+def showCategories(request):
+  all_cat=Categories.objects.all()
+  return render(request,'sidebar.html',{'all_cat':all_cat})
 
 # when user choose specific category
 def allCategoryPosts(request,cat_num):
       cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
       context={'cat_posts':cat_posts}
       return render(request ,'CategotyPage.html' ,context)
+
 
 #search for posts with title or tag
 def searchForPost(request):
   print(request.GET.get('word'))
   term = request.GET.get('word')
   print(term)
-  cat_posts = Post.objects.filter(
+  all_posts = Post.objects.filter(
     Q(title__icontains=term) |
     Q(tag_post__icontains=term)
     ).order_by('-time_created')
-  context={'cat_posts':cat_posts}
+  context={'all_posts':all_posts}
   return render(request ,'searchPage.html' ,context)
 
 
-def subscribeCategory(request,user_num,cat_num):
-	instance = categories_users_id(categories_id=cat_num, user_id=user_num)
-	if(subscribeCategory):
-		instance.save()
-	else:
-		instanse.delete()
+def subscribeCategory(request,cat_num):
+  user_num = request.user
+  cat = Categories.objects.get(id=cat_num)
+  instance = subscribe.objects.create(category_id=cat,users_id=user_num,subscribe=True)
+  instance.save()
+  # instance.subscribe = True
+  return HttpResponseRedirect('/posts')
 
 
+def unSubscribeCategory(request,cat_num):
+  user_num = request.user
+  instance = subscribe.objects.get(category_id=cat_num,users_id=user_num)
+  instance.delete()
+  # instance.subscribe = False
+  return HttpResponseRedirect('/posts')
+#========================================================
+#to list all posts
+def listPosts(request):
+    all_posts = Post.objects.all().order_by('-time_created')
+    # allcomments = comments.objects.filter(postId=1).order_by('commentTime')
+    # allreplys = replys.objects.filter(postId=1).order_by('replyTime')
+    context = {'all_posts':all_posts}
+    return render(request ,'postslist.html' ,context)
 
+def deletePost(request,post_num):
+  post=Post.objects.get(id=post_num)
+  post.delete()
+  return HttpResponseRedirect('/posts/list/')
 
+#edit post through form
+def editPost(request,post_num):
+  post=Post.objects.get(id=post_num)
+  if request.method=="POST":
+    new_post=postForm(requestadded_badWords.POST,request.FILES,instance=post)
+    if new_post.is_valid():
+      new_post.save()
+      return HttpResponseRedirect('/posts/list/')
+  else:
+    new_post=postForm(instance=post)
+  return render(request,'new.html',{'new_post':new_post}) 
+
+#list all categories
+def listCategories(request):
+    all_categories = Categories.objects.all()
+    context = {'all_categories':all_categories}
+    return render(request ,'categorylist.html' ,context) 
+
+#add new cat through form
+def addCategory(request):
+  new_cat=categoryForm()
+  added_cat=None
+  if request.method=="POST":
+    new_cat=categoryForm(request.POST)
+    if new_cat.is_valid():
+      new_cat.save()
+      return HttpResponseRedirect('/posts/catlist/')
+  return render(request,'newcat.html',{'new_cat':new_cat})
+
+def deleteCategory(request,cat_num):
+  category=Categories.objects.get(id=cat_num)
+  category.delete()
+  return HttpResponseRedirect('/posts/catlist/')   
+
+#edit post through form
+def editCategory(request,cat_num):
+  category=Categories.objects.get(id=cat_num)
+  if request.method=="POST":
+    new_cat=categoryForm(request.POST,instance=category)
+    if new_cat.is_valid():
+      new_cat.save()
+      return HttpResponseRedirect('/posts/catlist/')
+  else:
+    new_cat=categoryForm(instance=category)
+  return render(request,'newcat.html',{'new_cat':new_cat})    
 	
-
+#=========================================================================
 def commentsReplys(request):
 	allcomments = comments.objects.filter(postId=1).order_by('commentTime')
 	allreplys = replys.objects.filter(postId=1).order_by('replyTime')
