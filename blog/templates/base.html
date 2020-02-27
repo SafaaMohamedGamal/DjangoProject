@@ -10,6 +10,17 @@
 
 
     <title> {% block title%}My Site{% endblock %} </title>
+
+
+     <style>
+
+  {% comment %} .alert-danger ul li{
+    color: #fff !important;
+    background-color: green !important;
+  }  {% endcomment %}
+  
+</style>
+
 </head>
 
 <body>
@@ -41,6 +52,12 @@
                     <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
                     {% comment %} <a class="dropdown-item" href="{% url 'password_reset' %}">Reset Password</a> {% endcomment %}
                     <div class="dropdown-divider"></div>
+
+                    {% if user.is_superuser %}
+                        <a href = "{% url 'adminManage' %}" class="dropdown-item"> Admin Manage </a>
+                        <div class="dropdown-divider"></div>
+                    {% endif%}   
+
                     <a class="dropdown-item" href="{% url 'logout' %}">logout</a>
                     </div>
                 </li>
@@ -55,6 +72,12 @@
     </div>
 </nav>
 
+{% for i in user %}
+   {% if not i.is_active%}
+     <script>
+            document.querySelector
+    </script>
+    {% endif% }
 
 
     <div class = "container">
