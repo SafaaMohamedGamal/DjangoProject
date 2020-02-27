@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{%block content%}
+
+
+{% for i in user %}
+
+<div class"row">
+    <div class"col-6">
+        {{i}} 
+    </div> 
+
+    <div class"col-6 ml-auto">
+    {% if not i.is_superuser%}
+         <button  class = "btn btn-success mr-auto"> make admin </button> 
+    {% else%}
+        <h3> already an admin </h3>
+    {% endif %}     
+    </div> 
+   
+</div>  
+
+{% endfor %}
+
+
+{% endblock %}
+    
