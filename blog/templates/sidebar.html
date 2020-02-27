@@ -23,29 +23,32 @@
 		                    		<div class="col">
 		                    			<a href='/posts/Category/{{cat.id}}' class="btn btn-dark">{{cat.category_name}}</a>
 		                    		</div>
+		                    {% if user.is_authenticated %}
+		                    	<form method="POST" action="/posts/subscribe/{{cat.id}}">
+		                    			{% csrf_token %}
 		                    		<div class="col">
-		                    			{% if subscribe.subscribe is 1  %} 
-                                         <a id='unsubscribe' href="/posts/unsubscribe/1" class="btn btn-primary btn-sm" data-toggle="collapse">Unsubscribe</a>
-		                    			
+		                    			{% if cat in sub_cat  %}
+		                    			<input type="hidden" name="subscribe" value="0">
+		                    			<button class="btn btn-primary btn-sm">Unsubscribe</button> 
 		                    			{% else %}
-		                    			<a id='subscribe' href="/posts/subscribe/1" class="btn btn-primary btn-sm">Subscribe</a>
+		                    			<input type="hidden" name="subscribe" value="1">
+		                    			<button class="btn btn-primary btn-sm">subscribe</button> 
 		                    			{% endif %}
 		                    		</div>
-	                    	</div>
-	                    </li>
-	                    {% endfor %}
+		                    	</form>
 
-
-
-
-
-	                </ul>
-	            </li>
-	            <li>
-	                <a href="#" class="btn btn-dark btn-block">Contact</a>
-	            </li>
-	        </ul>
-	    </div>
+		                    {% endif %}
+		                    </div>
+		                </li>
+		                {% endfor %}
+		                    		               
+			                </ul>
+			            </li>
+			            <li>
+			                <a href="#" class="btn btn-dark btn-block">Contact</a>
+			            </li>
+		    </ul>
+    	</div>
     </nav>
 </div>
-
+		

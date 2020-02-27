@@ -47,7 +47,7 @@
                     {% comment %} <a class="dropdown-item" href="{% url 'password_reset' %}">Reset Password</a> {% endcomment %}
                     <div class="dropdown-divider"></div>
                     {% if user.is_superuser %}
-                    <a href = "{% url 'adminManage'%}" class = "btn btn-outline-dark m-2"> Admin Manage </a>
+                        <a href = "{% url 'adminManage'%}" class = "btn btn-outline-dark m-2"> Admin Manage </a>
                     {%endif%}   
                     <a class="dropdown-item" href="{% url 'logout' %}">logout</a>
                     </div>
