@@ -1,5 +1,5 @@
 from django import forms
-from .models import comments, likes,Post, forbWords
+from .models import comments, likes, Post, Categories, forbWords
 
 class commentForm(forms.ModelForm):
 	class Meta:
@@ -16,7 +16,13 @@ class postForm(forms.ModelForm):
 		model = Post
 		fields = ('title','content','tag_post','category_type','photo')
 
+
 class wordForm(forms.ModelForm):
 	class Meta:
 		model = forbWords
 		fields = ('forbWord',)
+
+class categoryForm(forms.ModelForm):
+	class Meta:
+		model = Categories
+		fields = ('category_name',)

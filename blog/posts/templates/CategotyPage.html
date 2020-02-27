@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block posts %}
+
+{% if user.is_authenticated %}
 <div class="col-md-7 mt-3 left">
     <a href="addPost" class="btn btn-danger btn-block">Add New Post &rarr;</a>
 </div>
+{%endif%}
 <div class="col-md-11 mt-3 left">
     {% for post in cat_posts %}
     <div class="card mb-4">

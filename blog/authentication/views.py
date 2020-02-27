@@ -34,8 +34,8 @@ def user(request):
 	users = User.objects.all()
 	flag = User.is_superuser
 	context = {
-		'user':users,
-		'flag':flag
+		'user':request.user,
+		'users':users
 	}
 	return render(request,'user.html',context)
 

@@ -4,8 +4,6 @@
 {% load crispy_forms_tags %}
 
 {% block posts %}
-
-
 <div class="col-md-8 mt-3 mx-auto">
    {% for post in all_posts %}
 	    <div class="card mb-4">
@@ -26,4 +24,22 @@
 	  	</div>
    {%endfor%}
 </div>
+
+{% endblock %}
+
+{% block paginate %}
+	{% if all_posts.has_other_pages %}
+	  <ul class="pagination">
+	    {% if all_posts.has_previous %}
+	      <li class=" mr-auto"><a class="btn btn-dark" href="?page={{ all_posts.previous_page_number }}">Previous</a></li>
+	    {% else %}
+	      <li class="disabled mr-auto"><a class="btn btn-dark" disabled>Previous</a></li>
+	    {% endif %}
+	    {% if all_posts.has_next %}
+	      <li><a class="btn btn-dark" href="?page={{ all_posts.next_page_number }}">Next</a></li>
+	    {% else %}
+	      <li class="disabled"><a class="btn btn-dark" disabled>Next</a></li>
+	    {% endif %}
+	  </ul>
+	{% endif %}
 {% endblock %}
