@@ -27,7 +27,7 @@ urlpatterns = [
     path('user/', views.user , name = 'user'),
     path('accounts/' , include('django.contrib.auth.urls')),
     path('signup/', views.signup , name = 'signup'),
-
+    path('mkAdmin/<num>', views.admin, name = 'admin'), 
     path('adminManage/', views.adminManage, name='adminManage'),
     url(r'^', include('posts.urls')),
     url(r'^posts/', include('posts.urls')),

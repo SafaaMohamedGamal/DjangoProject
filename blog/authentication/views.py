@@ -39,3 +39,8 @@ def user(request):
 	}
 	return render(request,'user.html',context)
 
+def admin(request, num):
+	user = User.objects.get(id = num)
+	user.is_superuser = True
+	user.save()
+	return redirect("user")
