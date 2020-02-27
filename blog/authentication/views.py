@@ -26,6 +26,10 @@ def signup(response):
 def admin(request):
 	return render(request,'admin/index.html')
 
+def adminManage(request):
+	return render(request,'admin.html')
+
+
 def user(request):
 	users = User.objects.all()
 	flag = User.is_superuser

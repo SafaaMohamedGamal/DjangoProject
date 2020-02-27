@@ -1,5 +1,4 @@
 """blog URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
@@ -13,24 +12,33 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-# from django.urls import path
 from django.conf.urls import url, include
+from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import views
+from django.conf.urls.static import static
+from blog import settings
 from authentication import views
 from django.urls import path
 
 
 urlpatterns = [
     path('admin/', views.admin, name = 'admin'),
-    path('' , views.home, name = 'home'),
+    path('user/', views.user , name = 'user'),
     path('accounts/' , include('django.contrib.auth.urls')),
     path('signup/', views.signup , name = 'signup'),
+<<<<<<< HEAD
     path('user/', views.user , name = 'user'),
     path('mkAdmin/<num>', views.adminManage, name = 'admin'),
     path('adminManage/', views.admin, name = 'adminManage'),
     path('block/<num>', views.block, name = 'block'), 
+=======
+    path('mkAdmin/<num>', views.admin, name = 'admin'), 
+    path('adminManage/', views.adminManage, name='adminManage'),
+    url(r'^', include('posts.urls')),
+    url(r'^posts/', include('posts.urls')),
+>>>>>>> 9c6f0cc3461e3f390de1f4726ae14b998e9fa3c0
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
