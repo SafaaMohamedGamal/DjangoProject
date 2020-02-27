@@ -9,13 +9,21 @@ from django.db.models import Q
 
 #to 5 posts in lamding page
 def showPosts(request):
+  if request.user.is_authenticated:
     allcomments=[]
     allreplys=[]
     all_posts = Post.objects.all().order_by('-time_created')[:5]
     allcomments = comments.objects.filter(postId=1).order_by('commentTime')
     allreplys = replys.objects.filter(postId=1).order_by('replyTime')
-    context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys}
+    all_cat=Categories.objects.all()
+    sub_cat=Categories.objects.filter(users_id=request.user)
+    context = {'all_posts':all_posts, 'comments': allcomments, 'replys': allreplys,'all_cat':all_cat,'sub_cat':sub_cat}
     return render(request ,'showPosts.html' ,context)
+  else:
+      all_posts = Post.objects.all().order_by('-time_created')[:5]
+      all_cat=Categories.objects.all()
+      context = {'all_posts':all_posts,'all_cat':all_cat}
+      return render(request ,'showPosts.html' ,context)
 
 def showOnePost(request, post_id):
     x = Post.objects.get(id = post_id)
@@ -24,34 +32,40 @@ def showOnePost(request, post_id):
     alllikes = likes.objects.filter(postId=x.id, like="like").count()
     alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
     urlike = likes.objects.filter(postId=x.id, userId=request.user)
+    all_cat=Categories.objects.all()
+    sub_cat=Categories.objects.filter(users_id=request.user)
     context = {'post':x, 'comments': allcomments, 
         'replys': allreplys, 
         'likescount': alllikes, 
         'dislikescount': alldislikes,
-        'urlike':urlike}
+        'urlike':urlike,
+        'all_cat':all_cat,
+        'sub_cat':sub_cat}
     return render(request ,'showOnePost.html' ,context)
 
 #add new post through form
 def addPost(request):
-  new_post=postForm()
-  added_post=None
-  if request.method=="POST":
-    new_post=postForm(request.POST,request.FILES)
-    if new_post.is_valid():
-      added_post=new_post.save(commit=False)
-      added_post.author=request.user
-      added_post.save()
-      return HttpResponseRedirect('/posts/')
-  return render(request,'new.html',{'new_post':new_post})
+  if request.user.is_authenticated:
+    new_post=postForm()
+    added_post=None
+    if request.method=="POST":
+      new_post=postForm(request.POST,request.FILES)
+      if new_post.is_valid():
+        added_post=new_post.save(commit=False)
+        added_post.author=request.user
+        added_post.save()
+        return HttpResponseRedirect('/posts/')
+    return render(request,'new.html',{'new_post':new_post})
+  else:
+    return HttpResponseRedirect('/posts/')
 
-def showCategories(request):
-  all_cat=Categories.objects.all()
-  return render(request,'sidebar.html',{'all_cat':all_cat})
 
 # when user choose specific category
 def allCategoryPosts(request,cat_num):
       cat_posts = Post.objects.filter(category_type=cat_num).order_by('-time_created')
-      context={'cat_posts':cat_posts}
+      all_cat=Categories.objects.all()
+      sub_cat=Categories.objects.filter(users_id=request.user)
+      context={'cat_posts':cat_posts,'all_cat':all_cat,'sub_cat':sub_cat}
       return render(request ,'CategotyPage.html' ,context)
 
 
@@ -64,25 +78,19 @@ def searchForPost(request):
     Q(title__icontains=term) |
     Q(tag_post__icontains=term)
     ).order_by('-time_created')
-  context={'all_posts':all_posts}
+  all_cat=Categories.objects.all()
+  sub_cat=Categories.objects.filter(users_id=request.user)
+  context={'all_posts':all_posts,'all_cat':all_cat,'sub_cat':sub_cat}
   return render(request ,'searchPage.html' ,context)
 
-
-def subscribeCategory(request,cat_num):
-  user_num = request.user
-  cat = Categories.objects.get(id=cat_num)
-  instance = subscribe.objects.create(category_id=cat,users_id=user_num,subscribe=True)
-  instance.save()
-  # instance.subscribe = True
+def subcribe(request,cat_num):
+  category=Categories.objects.get(id=cat_num)
+  if request.POST.get('subscribe')=='0':
+    category.users_id.remove(request.user)
+  else:
+    category.users_id.add(request.user)
   return HttpResponseRedirect('/posts')
 
-
-def unSubscribeCategory(request,cat_num):
-  user_num = request.user
-  instance = subscribe.objects.get(category_id=cat_num,users_id=user_num)
-  instance.delete()
-  # instance.subscribe = False
-  return HttpResponseRedirect('/posts')
 #========================================================
 #to list all posts
 def listPosts(request):

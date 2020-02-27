@@ -10,7 +10,7 @@
 		                <a href="/posts/list/" class="btn btn-dark">About</a>
 		            </li>
 		            <li class="active mb-3">
-		                <a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle btn btn-dark"><b>Categories</b></a>
+		                <a href='#homeSubmenu' data-toggle="collapse" class="dropdown-toggle btn btn-dark"><b>Categories</b></a>
 		                <ul class="collapse list-unstyled" id="homeSubmenu">
 		                	{% for cat in all_cat %}
 		                    <li class="mb-3">
@@ -18,19 +18,22 @@
 		                    		<div class="col">
 		                    			<a href='/posts/Category/{{cat.id}}' class="btn btn-dark">{{cat.category_name}}</a>
 		                    		</div>
+		                    		<form method="POST" action="/posts/subscribe/{{cat.id}}">
+		                    			{% csrf_token %}
 		                    		<div class="col">
-		                    			{% if subscribe.subscribe is 1  %} 
-                                         <a id='unsubscribe' href="/posts/unsubscribe/1" class="btn btn-info">Unsubscribe</a>
-		                    			
+		                    			{% if cat in sub_cat  %}
+		                    			<input type="hidden" name="subscribe" value="0">
+		                    			<button class="dtn btn-info text-white ml-sm-5">Unsubscribe</button> 
 		                    			{% else %}
-		                    			<a id='subscribe' href="/posts/subscribe/1" class="btn btn-info">Subscribe</a>
+		                    			<input type="hidden" name="subscribe" value="1">
+		                    			<button class="dtn btn-info text-white ml-sm-5">subscribe</button> 
 		                    			{% endif %}
 		                    		</div>
+		                    	</form>
 		                    	</div>
 		                    </li>
 		                    {% endfor %}
-		                    
-		               
+		                    		               
 		                </ul>
 		            </li>
 		            <li>

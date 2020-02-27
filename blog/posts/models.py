@@ -74,5 +74,7 @@ class subscribe(models.Model):
 	category_id = models.ForeignKey(Categories, on_delete=models.DO_NOTHING)
 	users_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 	subscribe = models.BooleanField(default=True)
+	def __str__(self):
+		return self.subscribe
 
 		

@@ -11,8 +11,9 @@ urlpatterns = [
     url(r'^Category/addPost$', views.addPost),
     url(r'^Category/(?P<cat_num>[1-3])$', views.allCategoryPosts),
     url(r'^Search/$', views.searchForPost),
-    url(r'^subscribe/(?P<cat_num>[1-3])$', views.subscribeCategory),
-    url(r'^unsubscribe/(?P<cat_num>[1-3])$', views.unSubscribeCategory),
+    #================
+    url(r'^subscribe/(?P<cat_num>[\w]+)$', views.subcribe),
+    # url(r'^unsubscribe/(?P<cat_num>[1-3])$', views.unSubscribeCategory),
     url(r'^list/$', views.listPosts),
     url(r'^delpost/(?P<post_num>[\w]+)$', views.deletePost),
     url(r'^editpost/(?P<post_num>[\w]+)$', views.editPost),
