@@ -13,7 +13,8 @@
 
     <div class"col-6 ml-auto">
     {% if not i.is_superuser%}
-         <button  class = "btn btn-success mr-auto"> make admin </button> 
+         <button onclick = "window.location.href = '/mkAdmin/{{i.id}}'" class = "btn btn-success mr-auto">  make admin </button>
+          
     {% else%}
         <h3> already an admin </h3>
     {% endif %}     
