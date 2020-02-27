@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import comments, replys, Post, likes, forbWords,subscribe,Categories
 from .forms import commentForm,likeForm, postForm , wordForm, categoryForm
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 from django.db.models import Q
 
@@ -12,7 +13,19 @@ def showPosts(request):
   if request.user.is_authenticated:
     allcomments=[]
     allreplys=[]
-    all_posts = Post.objects.all().order_by('-time_created')[:5]
+    all_posts = Post.objects.all().order_by('-time_created')
+    paginator = Paginator(all_posts, 2)
+    page = request.GET.get('page')
+
+    try:
+        all_posts = paginator.page(page)
+    except PageNotAnInteger:
+        all_posts = paginator.page(1)
+    except EmptyPage:
+        all_posts = paginator.page(paginator.num_pages)
+
+
+
     for x in all_posts:
       alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
       if alldislikes==10:
