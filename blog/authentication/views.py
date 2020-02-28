@@ -16,13 +16,13 @@ def signup(response):
 	    if form.is_valid():
 	        form.save()
 
-	        return redirect("home")
+	        return redirect("login")
     else:
 	    form = RegisterForm()
 
     return render(response, "registration/sign_up.html", {"form":form})
 
-
+#redirect to admin panel
 def admin(request):
 	return render(request,'admin/index.html')
 
@@ -39,8 +39,22 @@ def user(request):
 	}
 	return render(request,'user.html',context)
 
-def admin(request, num):
+# #make user an admin
+def adminMake(request, num):
 	user = User.objects.get(id = num)
 	user.is_superuser = True
 	user.save()
 	return redirect("user")
+
+def block(request, num):
+	user = User.objects.get(id = num)
+	user.is_active = False
+	user.save()
+	return redirect("user")
+
+# def adminManage(request):
+# 	return redirect("admin")
+
+
+def login(request):
+	return render(request,'login.html')

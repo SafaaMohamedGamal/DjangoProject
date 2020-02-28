@@ -10,11 +10,12 @@
                     <form method = "post" novalidate>
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button type = "submit" class = "btn btn-primary">  Login </button>
+                        <button type = "submit" class = "btn btn-success">  Login </button>
                         <a href = "{% url 'password_reset'  %}" class = "btn btn-link"> Forgot Password </a>
                     </form>
                 </div>
             </div>
         </div>    
     </div>
+
 {% endblock %}

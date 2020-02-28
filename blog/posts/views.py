@@ -269,7 +269,7 @@ def editWords(request, word_num):
   badWords = forbWords.objects.all()
   context = {'badWords':badWords,
               'form':new_badWords}
-  return render(request,'forbWords.html',context)
+  return render(request,'editforbWords.html',context)
 
 
 def deleteWords(request, word_num):
