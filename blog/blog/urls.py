@@ -23,7 +23,7 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('admin/', views.admin, name = 'admin'),
+    # path('admin/', views.admin, name = 'admin'),
     path('user/', views.user , name = 'user'),
     path('accounts/' , include('django.contrib.auth.urls')),
     path('signup/', views.signup , name = 'signup'),
@@ -31,6 +31,8 @@ urlpatterns = [
     path('mkAdmin/<num>', views.adminMake, name = 'admin'), 
     path('adminManage/', views.adminManage, name='adminManage'),
     url(r'^', include('posts.urls')),
+    url(r'^about/', views.about),
+    url(r'^contact/', views.contact),
     url(r'^posts/', include('posts.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

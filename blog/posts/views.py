@@ -48,9 +48,7 @@ def showOnePost(request, post_id):
     allreplys = replys.objects.filter(postId=x.id).order_by('replyTime')
     alllikes = likes.objects.filter(postId=x.id, like="like").count()
     alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
-    urlike = likes.objects.filter(postId=x.id, userId=request.user)
     all_cat=Categories.objects.all()
-    sub_cat=Categories.objects.filter(users_id=request.user)
 
     badWords = forbWords.objects.all()
     xword = []
@@ -59,6 +57,7 @@ def showOnePost(request, post_id):
 
     if request.user.is_authenticated:
       urlike = likes.objects.filter(postId=x.id, userId=request.user)
+      sub_cat=Categories.objects.filter(users_id=request.user)
 
       context = {'post':x, 'comments': allcomments, 
           'replys': allreplys, 

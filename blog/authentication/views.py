@@ -10,6 +10,12 @@ from templates import admin
 def home(request):
     return render(request, 'home.html')
 
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
 def signup(response):
     if response.method == "POST":
 	    form = RegisterForm(response.POST)
@@ -22,12 +28,20 @@ def signup(response):
 
     return render(response, "registration/sign_up.html", {"form":form})
 
-#redirect to admin panel
-def admin(request):
-	return render(request,'admin/index.html')
+# #redirect to admin panel
+# def admin(request):
+#     if request.user.is_superuser:
+#     	return render(request,'/admin/index.html')
+#     else:
+#     	return redirect('/posts/')
+
 
 def adminManage(request):
-	return render(request,'admin.html')
+    if request.user.is_superuser:
+    	return render(request,'admin.html')
+    else:
+    	return redirect('/posts/')
+	
 
 
 def user(request):
