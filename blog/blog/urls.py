@@ -23,13 +23,12 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('admin/', views.admin, name = 'admin'),
-    path('user/', views.user , name = 'user'),
-    path('accounts/' , include('django.contrib.auth.urls')),
-    path('signup/', views.signup , name = 'signup'),
-    path('mkAdmin/<num>', views.admin, name = 'admin'), 
-    path('adminManage/', views.adminManage, name='adminManage'),
     url(r'^', include('posts.urls')),
+    path('user/', views.user , name = 'user'),
+    path('accounts/' , include('authentication.urls')),
+    path('block/<num>', views.block, name = 'block'), 
+    path('mkAdmin/<num>', views.adminMake, name = 'admin'), 
+    path('adminManage/', views.adminManage, name='adminManage'),
     url(r'^posts/', include('posts.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

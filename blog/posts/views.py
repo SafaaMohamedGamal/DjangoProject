@@ -48,17 +48,15 @@ def showOnePost(request, post_id):
     allreplys = replys.objects.filter(postId=x.id).order_by('replyTime')
     alllikes = likes.objects.filter(postId=x.id, like="like").count()
     alldislikes = likes.objects.filter(postId=x.id, like="dislike").count()
-    urlike = likes.objects.filter(postId=x.id, userId=request.user)
     all_cat=Categories.objects.all()
-    sub_cat=Categories.objects.filter(users_id=request.user)
 
     badWords = forbWords.objects.all()
     xword = []
     for word in badWords:
         xword.append(word.forbWord)
-
     if request.user.is_authenticated:
       urlike = likes.objects.filter(postId=x.id, userId=request.user)
+      sub_cat=Categories.objects.filter(users_id=request.user)
 
       context = {'post':x, 'comments': allcomments, 
           'replys': allreplys, 
@@ -69,7 +67,8 @@ def showOnePost(request, post_id):
           'sub_cat':sub_cat, 
           'forbWords': xword}
     else:
-      context = {'post':x,
+      context = {
+          'post':x,
           'likescount': alllikes, 
           'dislikescount': alldislikes,
           'all_cat':all_cat, 
@@ -269,7 +268,7 @@ def editWords(request, word_num):
   badWords = forbWords.objects.all()
   context = {'badWords':badWords,
               'form':new_badWords}
-  return render(request,'forbWords.html',context)
+  return render(request,'editforbWords.html',context)
 
 
 def deleteWords(request, word_num):

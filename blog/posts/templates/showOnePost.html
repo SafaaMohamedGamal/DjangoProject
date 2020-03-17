@@ -186,6 +186,8 @@
                 url = "/posts/reply/?post={{post.id}}&comment={{comment.id}}&text=" + reptextarea{{comment.id}}.value
 
                 add{{comment.id}} = document.querySelector('.appendRep{{comment.id}}').lastElementChild
+                append{{comment.id}} = document.querySelector('.appendRep{{comment.id}}')
+                add{{comment.id}}.style.display="none"
 
                 let xhr = new XMLHttpRequest();
                 xhr.open("GET", url)
@@ -204,15 +206,15 @@
                         append{{comment.id}}.appendChild(addEl)
 
                         let addid = document.createElement("div")
-                        addid.setAttribute('class', "commentid")
+                        addid.setAttribute('class', "replyid")
                         addEl.appendChild(addid)
 
                         let addtxt = document.createElement("div")
-                        addtxt.setAttribute('class', "commenttext")
+                        addtxt.setAttribute('class', "replytext")
                         addEl.appendChild(addtxt)
 
                         let addtm = document.createElement("div")
-                        addtm.setAttribute('class', "commenttime")
+                        addtm.setAttribute('class', "replytime")
                         addEl.appendChild(addtm)
 
                         addEl.style.display="none"
